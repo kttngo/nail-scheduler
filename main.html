@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchid Nails & Hair Appointment</title>
+    <style>
+        /*  Styles  */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #eac2f4 0%, #faf5ff 100%);
+            color: #374151;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        h1 {
+            font-family: "Brush Script MT", cursive;
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: -1rem;
+        }
+
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+
+        /* Layout */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        @media (min-width: 1024px) {
+            .grid {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        .sticky {
+            position: sticky;
+            top: 1.5rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 1rem;    
+        }
+
+
+        /* Card */
+        .card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #f472b6;
+            box-shadow: 0 0 0 3px rgba(244, 114, 182, 0.1);
+        }
+
+        button {
+            background: #d13ae8;
+            color: white;
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover {
+            background: #a32eb5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+        }
+
+        /* Cancel button */
+        button.secondary {
+            background: transparent;
+            color: #dc2626;
+            padding: 0.5rem;
+        }
+
+        button.secondary:hover {
+            background-color: #fef2f2;
+            transform: none;
+            box-shadow: none;
+        }
+
+        input.invalid {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        /* Calendar*/
+        .calendar-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .calendar-nav button {
+            padding: 0.5rem;
+            background: transparent;
+            color: #6b7280;
+        }
+
+        .calendar-nav button:hover {
+            background-color: #f3f4f6;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.25rem;
+        }
+
+        .calendar-header {
+            text-align: center;
+            padding: 0.5rem;
+            font-weight: 600;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .calendar-cell {
+            height: 3rem;
+            border: 1px solid #e5e7eb;
+            padding: 0.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            background-color: white;
+        }
+
+        .calendar-cell:hover:not(.disabled) {
+            background-color: #f3f4f6;
+            cursor: pointer;
+        }
+
+        .calendar-cell .day-number {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .calendar-cell .appointment-count {
+            font-size: 0.75rem;
+            color: #2a79f9;
+            font-weight: 600;
+        }
+
+        /* Appointment card */
+        .appointment-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .appointment-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .appointment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .appointment-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .appointment-detail {
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .detail-value {
+            color: #6b7280;
+        }
+
+        .appointment-status {
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .status-scheduled {
+            background-color: #dbeafe;
+            color: #2142b1;
+        }
+
+        .status-completed {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        .status-cancelled {
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            z-index: 50;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            color: white;
+        }
+
+        .notification.success {
+            background-color: #30c858;
+        }
+
+        .notification.info {
+            background-color: #3b82f6;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .space-y-4 > * + * {
+            margin-top: 1rem;
+        }
+
+        .space-y-6 > * + * {
+            margin-top: 1.5rem;
+        }
+
+        @media (max-width: 1023px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .appointment-details {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size:3rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            h3 {
+                font-size: 1.25rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .calendar-grid {
+                grid-template-columns: repeat(7, 1fr);
+            }
+            
+            .calendar-cell {
+                height: 2.5rem;
+                font-size: 0.75rem;
+            }
+            
+            .appointment-card {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="orchid.png" alt="Orchid Logo" style="width: 100%; height: 100%; border-radius: 50%;">
+                </div>
+                <h1>Orchid Nails & Hair</h1>
+            </div>
+            <p>Professional Nail and Hair Care Appointment Scheduler</p>
+        </header>
+
+        <div class="grid">
+            <!-- Sidebar with appointment form -->
+            <div>
+                <div class="card sticky">
+                    <h2>Schedule New Appointment</h2>
+                    
+                    <form id="appointmentForm" class="space-y-4">
+                        <div class="form-group">
+                            <label for="clientName">Client Name</label>
+                            <input type="text" id="clientName" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="clientPhone">Phone Number</label>
+                            <input type="tel" id="clientPhone" placeholder="(555) 123-4567" required>
+                            <div id="phoneError" class="error-message">Please enter a valid phone number</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="serviceType">Service Type</label>
+                            <select id="serviceType" required>
+                                <option value="">Select a service</option>
+                                <option value="Manicure">Manicure</option>
+                                <option value="Pedicure">Pedicure</option>
+                                <option value="Gel Nails">Gel Nails</option>
+                                <option value="Acrylic Nails">Acrylic Nails</option>
+                                <option value="Hair Cut">Hair Cut</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="appointmentDateTime">Date & Time</label>
+                            <input type="datetime-local" id="appointmentDateTime" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="duration">Duration (minutes)</label>
+                            <input type="number" id="duration" min="15" max="180" value="60">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes">Notes</label>
+                            <textarea id="notes" rows="3"></textarea>
+                        </div>
+                        
+                        <button type="submit">
+                            <i class="fas fa-calendar-plus" style="margin-right: 0.5rem;"></i>Schedule Appointment
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Appointments and calendar -->
+            <div>
+                <!-- Calendar -->
+                <div class="card">
+                    <div class="calendar-controls">
+                        <h3>Appointment Calendar</h3>
+                        <div class="calendar-nav">
+                            <button id="prevMonth" class="secondary" aria-label="Previous Month">←</button>
+                            <span id="currentMonth" style="padding: 0.5rem 1rem; font-weight: 500;"></span>
+                            <button id="nextMonth" class="secondary" aria-label="Next Month">→</button>
+                        </div>
+                    </div>
+                    <div id="calendar" class="calendar-grid"></div>
+                </div>
+
+                <!-- Appointments List -->
+                <div class="card">
+                    <div class="calendar-controls">
+                        <h3>Scheduled Appointments</h3>
+                        <button id="clearAll" class="secondary">
+                            <i class="fas fa-trash" style="margin-right: 0.25rem;"></i>Clear All
+                        </button>
+                    </div>
+                    <div id="appointmentsList" class="space-y-4">
+                        <p class="text-center" id="noAppointments" style="padding: 2rem 0; color: #9ca3af;">No appointments scheduled yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class NailSalonScheduler {
+            constructor() {
+                this.appointments = this.loadAppointments();
+                this.currentDate = new Date();
+                this.currentMonth = this.currentDate.getMonth();
+                this.currentYear = this.currentDate.getFullYear();
+                
+                this.initializeEventListeners();
+                this.renderCalendar();
+                this.renderAppointments();
+            }
+
+            // Events
+            initializeEventListeners() {
+                document.getElementById('appointmentForm').addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    if (this.validateForm()) {
+                        this.addAppointment();
+                    }
+                });
+
+                document.getElementById('prevMonth').addEventListener('click', () => {
+                    this.currentMonth--;
+                    if (this.currentMonth < 0) {
+                        this.currentMonth = 11;
+                        this.currentYear--;
+                    }
+                    this.renderCalendar();
+                });
+
+                document.getElementById('nextMonth').addEventListener('click', () => {
+                    this.currentMonth++;
+                    if (this.currentMonth > 11) {
+                        this.currentMonth = 0;
+                        this.currentYear++;
+                    }
+                    this.renderCalendar();
+                });
+
+                document.getElementById('clearAll').addEventListener('click', () => {
+                    if (confirm('Do you want to delete all appointments?')) {
+                        this.appointments = [];
+                        this.saveAppointments();
+                        this.renderAppointments();
+                        this.renderCalendar();
+                        this.showNotification('All appointments cleared!', 'success');
+                    }
+                });
+
+                const phoneInput = document.getElementById('clientPhone');
+                phoneInput.addEventListener('input', (e) => {
+                    this.formatPhoneNumber(e.target);
+                });
+
+                phoneInput.addEventListener('blur', (e) => {
+                    this.validatePhoneNumber(e.target);
+                });
+            }
+
+            // Manage Appointments
+            addAppointment() {
+                const appointment = {
+                    id: Date.now(),
+                    clientName: document.getElementById('clientName').value,
+                    clientPhone: document.getElementById('clientPhone').value,
+                    serviceType: document.getElementById('serviceType').value,
+                    dateTime: document.getElementById('appointmentDateTime').value,
+                    duration: parseInt(document.getElementById('duration').value),
+                    notes: document.getElementById('notes').value,
+                    status: 'scheduled'
+                };
+
+                this.appointments.push(appointment);
+                this.saveAppointments();
+
+                // Update display
+                this.renderAppointments();
+                this.renderCalendar();
+                
+                // Reset form
+                document.getElementById('appointmentForm').reset();
+                
+                // Show success message
+                this.showNotification('Appointment scheduled successfully!', 'success');
+            }
+
+            deleteAppointment(id) {
+                this.appointments = this.appointments.filter(app => app.id !== id);
+                this.saveAppointments();
+
+                // Update display
+                this.renderAppointments();
+                this.renderCalendar();
+                this.showNotification('Appointment deleted successfully!', 'success');
+            }
+
+            loadAppointments() {
+                return window.nailSalonAppointments || [];
+            }
+
+            saveAppointments() {
+                window.nailSalonAppointments = this.appointments;
+            }
+
+            
+
+            // Functions
+            renderCalendar() {
+                const calendarEl = document.getElementById('calendar');
+                const monthYearEl = document.getElementById('currentMonth');
+                
+                const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+                                  'July', 'August', 'September', 'October', 'November', 'December'];
+                
+                monthYearEl.textContent = `${monthNames[this.currentMonth]} ${this.currentYear}`;
+                
+                // Get first day of month and number of days
+                const firstDay = new Date(this.currentYear, this.currentMonth, 1).getDay();
+                const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+                
+                calendarEl.innerHTML = '';
+                
+                // Add day headers
+                ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
+                    const dayHeader = document.createElement('div');
+                    dayHeader.className = 'calendar-header';
+                    dayHeader.textContent = day;
+                    calendarEl.appendChild(dayHeader);
+                });
+                
+                // Add empty cells for days before first day of month
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyCell = document.createElement('div');
+                    emptyCell.className = 'calendar-cell';
+                    emptyCell.style.backgroundColor = '#f9fafb';
+                    calendarEl.appendChild(emptyCell);
+                }
+                
+                // Add days of month
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const dayCell = document.createElement('div');
+                    dayCell.className = 'calendar-cell';
+                    
+                    const dateStr = `${this.currentYear}-${String(this.currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const dayAppointments = this.appointments.filter(app => app.dateTime.startsWith(dateStr));
+                    
+                    dayCell.innerHTML = `
+                        <div class="day-number">${day}</div>
+                        ${dayAppointments.length > 0 ? 
+                            `<div class="appointment-count">${dayAppointments.length} appt${dayAppointments.length > 1 ? 's' : ''}</div>` : 
+                            ''}
+                    `;
+                    
+                    calendarEl.appendChild(dayCell);
+                }
+            }
+
+            renderAppointments() {
+                const appointmentsList = document.getElementById('appointmentsList');
+                
+                if (this.appointments.length === 0) {
+                    appointmentsList.innerHTML = '<p class="text-center" id="noAppointments" style="padding: 2rem 0; color: #9ca3af;">No appointments scheduled yet</p>';
+                    return;
+                }
+                
+                // Sort appointments by date
+                const sortedAppointments = [...this.appointments].sort((a, b) => 
+                    new Date(a.dateTime) - new Date(b.dateTime)
+                );
+                
+                appointmentsList.innerHTML = sortedAppointments.map(app => `
+                    <div class="appointment-card">
+                        <div class="appointment-header">
+                            <div>
+                                <h4>${app.clientName}</h4>
+                                <p style="font-size: 0.875rem; color: #6b7280;">${app.clientPhone}</p>
+                            </div>
+                            <button onclick="scheduler.deleteAppointment(${app.id})" class="secondary" aria-label="Delete Appointment">✖</button>
+                        </div>
+                        
+                        <div class="appointment-details">
+                            <div class="appointment-detail">
+                                <span class="detail-label">Service:</span>
+                                <span class="detail-value">${app.serviceType}</span>
+                            </div>
+                            <div class="appointment-detail">
+                                <span class="detail-label">Duration:</span>
+                                <span class="detail-value">${app.duration} min</span>
+                            </div>
+                            <div class="appointment-detail" style="grid-column: 1 / -1;">
+                                <span class="detail-label">When:</span>
+                                <span class="detail-value">${this.formatDateTime(app.dateTime)}</span>
+                            </div>
+                            ${app.notes ? `
+                                <div class="appointment-detail" style="grid-column: 1 / -1;">
+                                    <span class="detail-label">Notes:</span>
+                                    <span class="detail-value">${app.notes}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="appointment-status">
+                            <span class="status-badge status-${app.status}">
+                                ${app.status}
+                            </span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            formatDateTime(dateTimeStr) {
+                const date = new Date(dateTimeStr);
+                return date.toLocaleString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            showNotification(message, type = 'info') {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Animate in
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 100);
+                
+                // Animate out and remove
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+
+            // NEW: Added these methods
+            formatPhoneNumber(input) {
+                let value = input.value.replace(/\D/g, '');
+    
+                if (value.length >= 6) {
+                    value = `(${value.slice(0,3)}) ${value.slice(3,6)}-${value.slice(6,10)}`;
+                } else if (value.length >= 3) {
+                    value = `(${value.slice(0,3)}) ${value.slice(3)}`;
+                }
+    
+                input.value = value;
+            }
+
+            validatePhoneNumber(input) {
+                const phoneRegex = /^\(\d{3}\) \d{3}-\d{4}$/;
+                const digitCount = input.value.replace(/\D/g, '').length;
+                const errorMsg = document.getElementById('phoneError');
+    
+                if (digitCount !== 10) {
+                    input.classList.add('invalid');
+                    errorMsg.style.display = 'block';
+                    return false;
+                } else {
+                    input.classList.remove('invalid');
+                    errorMsg.style.display = 'none';
+                    return true;
+                }
+            }
+
+            validateForm() {
+                const phoneInput = document.getElementById('clientPhone');
+                return this.validatePhoneNumber(phoneInput);
+            }
+        }
+
+
+        let scheduler;
+        document.addEventListener('DOMContentLoaded', () => {
+            scheduler = new NailSalonScheduler();
+            
+            // Set minimum date/time for appointment form
+            const now = new Date();
+            const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            document.getElementById('appointmentDateTime').min = localDateTime;
+        });
+    </script>
+</body>
+</html>
+
